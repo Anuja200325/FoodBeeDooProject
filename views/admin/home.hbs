@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+
     <style>
         /* Basic CSS Reset */
         * {
@@ -16,22 +11,34 @@
             font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #f06c64, #f4d35e);
             min-height: 100vh;
+            padding: 20px;
+            padding-top: 100px;
+        }
+
+        .main-content {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            width: 100%;
+            margin-top: 80px; 
         }
 
         /* Container */
         .container {
-            background-color: #ffffff;
+            background: linear-gradient(135deg, rgba(240, 108, 100, 0.5), rgba(244, 211, 94, 0.5));
+
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
             width: 80%;
             max-width: 1200px;
         }
-
+        .navbar {
+            z-index: 1000; /* Ensures navbar is above all other elements */
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
         h2 {
             margin-bottom: 10px;
             color: #333;
@@ -94,6 +101,8 @@
             background-color: #388e3c;
         }
 
+        
+
         /* Table */
         table {
             width: 100%;
@@ -134,8 +143,8 @@
             font-size: 14px;
         }
     </style>
-</head>
-<body>
+
+<section>
     <!-- Main Content -->
     <div class="container">
         <!-- Key Sections -->
@@ -194,5 +203,6 @@
             &copy; 2024 FoodCart Admin Dashboard
         </footer>
     </div>
-</body>
-</html>
+</section>
+
+
