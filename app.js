@@ -3,7 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var { create } = require('express-handlebars'); // Update this line
+var { create } = require('express-handlebars');
+const db = require('./mongodb/connection'); // Import the db connection
 
 var adminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
@@ -34,6 +35,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', adminRouter);
 app.use('/users', usersRouter);
 
+// Connect to MongoDB when the app starts
+db.connect()
+  .then(() => {
+    console.log('Database connection established.');
+  })
+  .catch((err) => {
+    console.error('Failed to connect to the database:', err);
+  });
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
@@ -41,7 +51,6 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 

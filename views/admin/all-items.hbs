@@ -1,0 +1,109 @@
+<style>
+    body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #ea726b, #e0c76b);
+}
+.navbar {
+            z-index: 1000; /* Ensures navbar is above all other elements */
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+
+.food-list {
+    background: linear-gradient(135deg, #ea726b, #e0c76b);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    padding: 30px;
+    margin-top: 80px; /* Adjust this value based on your navbar height */
+    
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #ffffff;
+    font-size: 34px;
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: left;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+th {
+    background-color: #4CAF50;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+td {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
+    color: #333;
+}
+
+tbody tr:nth-child(even) td {
+    background-color: #f2f2f2; /* Zebra striping */
+}
+
+tbody tr:nth-child(odd) td {
+    background-color: #ffffff;
+}
+
+</style>
+
+
+<section class="food-list">
+        <h2>Food Item List</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Food ID</th>
+                    <th>Food Item</th>
+                    <th>Price (₹)</th>
+                    <th>Source Restaurant</th>
+                    <th>Category</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>101</td>
+                    <td>Margherita Pizza</td>
+                    <td>299</td>
+                    <td>Pizza Hut</td>
+                    <td>Italian</td>
+                </tr>
+                <tr>
+                    <td>102</td>
+                    <td>Chicken Biryani</td>
+                    <td>350</td>
+                    <td>Biryani House</td>
+                    <td>Indian</td>
+                </tr>
+                <tr>
+                    <td>103</td>
+                    <td>Caesar Salad</td>
+                    <td>180</td>
+                    <td>Green Leaf</td>
+                    <td>Salads</td>
+                </tr>
+                <!-- Add more food items as needed -->
+            </tbody>
+        </table>
+    </section>
+
+
