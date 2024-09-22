@@ -53,6 +53,17 @@ router.post('/submit-food',function(req,res,next){
 
 
 
+router.get('/all-restaurants',(req,res,next)=>{
+  //console.log('at get function of all-restaurant')
+  itemHelpers.availableRestaurants().then((restaurants)=>{
+
+    //console.log(JSON.stringify(restaurants,null,2))
+    res.render('admin/all-restaurants',{restaurants})
+
+  })
+  
+})
+
 
 
 module.exports = router;

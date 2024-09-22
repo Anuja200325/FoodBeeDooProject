@@ -52,6 +52,35 @@ module.exports = {
                 reject(error);  // Reject if there's any error
             }
         });
+    },
+
+    availableRestaurants: () => {
+        return new Promise(async (resolve, reject) => {
+            let restaurantAvailable = await db.get().collection(collection.ITEMS_COLLECTION).aggregate([
+                {
+                    $group: {
+                        _id: "$restaurant",  // Group by the actual restaurant field
+                        foodItems: {
+                            $push: {
+                                foodItem: "$food_item",  // Food items under each restaurant
+                                price: "$price"  // Corresponding price
+                            }
+                        }
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,  // Exclude the `_id` field
+                        restaurant: "$_id",  // Map the grouped `_id` (which is the restaurant name) to `restaurant`
+                        foodItems: 1  // Keep the `foodItems` as is
+                    }
+                }
+            ]).toArray();
+    
+            console.log("Aggregation ended");
+            resolve(restaurantAvailable);
+        });
     }
+    
     
 };
