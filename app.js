@@ -5,6 +5,9 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var { create } = require('express-handlebars');
 const db = require('./mongodb/connection'); // Import the db connection
+const fileUpload = require('express-fileupload');
+
+
 
 var adminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
@@ -31,6 +34,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(fileUpload());
 
 app.use('/', adminRouter);
 app.use('/users', usersRouter);
@@ -43,6 +47,7 @@ db.connect()
   .catch((err) => {
     console.error('Failed to connect to the database:', err);
   });
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

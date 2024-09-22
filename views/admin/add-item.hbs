@@ -75,7 +75,7 @@ input:focus, select:focus {
 </style>
     <section class="food-form">
         <h2>Add Food Item</h2>
-        <form action="/submit-food" method="post">
+        <form action="/submit-food" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="food-id">Food ID:</label>
                 <input type="text" id="food-id" name="food_id" required>
@@ -104,7 +104,7 @@ input:focus, select:focus {
 
             <div class="form-group"></div>
                 <label for="food-image">Food Image:</label>
-                <input type="file" id="food-image" name="food_image" accept="image/*" required>
+                <input type="file" id="food-image" name="food_image" accept="image/*" >
             </div>
 
             <button type="submit" class="submit-btn">Add Food Item</button>

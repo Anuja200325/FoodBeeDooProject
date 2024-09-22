@@ -5,105 +5,113 @@
     padding: 20px;
     background: linear-gradient(135deg, #ea726b, #e0c76b);
 }
-.navbar {
-            z-index: 1000; /* Ensures navbar is above all other elements */
-            position: fixed;
-            top: 0;
-            width: 100%;
-        }
 
-.food-list {
-    background: linear-gradient(135deg, #ea726b, #e0c76b);
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    padding: 30px;
-    margin-top: 80px; /* Adjust this value based on your navbar height */
-    
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin-top: 7%; /* Clears the navbar */
+    gap: 20px; /* Increased space between cards for better layout */
 }
 
-h2 {
-    margin-bottom: 20px;
-    color: #ffffff;
-    font-size: 34px;
+.card {
+    width: 18rem;
+    background-color: #fff; /* Clean white background for the card */
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effects */
+}
+
+.card:hover {
+    transform: translateY(-10px); /* Lift on hover */
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+}
+
+.card-img-top {
+    height: auto;
+    max-height: 160px;
+    object-fit: cover; /* Better fit for different image sizes */
+    border-bottom: 1px solid #ddd; /* Separating image and content */
+}
+
+.card-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, #ea726b, #e0c76b); /* Light background for the content */
+}
+
+.card-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #333; /* Darker text for better readability */
+    margin-bottom: 10px;
     text-align: center;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-th, td {
-    border: 1px solid #ddd;
-    padding: 15px;
-    text-align: left;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-th {
-    background-color: #4CAF50;
-    color: #ffffff;
+label {
     font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #555;
+    background: linear-gradient(135deg, #ea726b, #e0c76b);
 }
 
-td {
-    background-color: #f9f9f9;
-}
-
-tbody tr:hover {
-    background-color: #f1f1f1;
+select.form-select {
+    padding: 10px;
+    border: 5px solid #ccc;
+    border-radius: 5px;
+    background: linear-gradient(135deg, #ea726b, #e0c76b);
     color: #333;
+    font-size: 1rem;
+    width: 100%;
+    transition: border-color 0.3s;
 }
 
-tbody tr:nth-child(even) td {
-    background-color: #f2f2f2; /* Zebra striping */
+select.form-select:hover {
+    border-color: #ea726b; /* Border change on hover */
 }
 
-tbody tr:nth-child(odd) td {
-    background-color: #ffffff;
+.btn-primary {
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #4CAF50; /* Green button */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
 }
+
+.btn-primary:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+
+
 
 </style>
 
+<section>
+  <div class="container card-container">
+    {{#each items}}
+      <div class="card">
+        
+        <div class="card-body">
+          <h5 class="card-title">{{this.food_item}}</h5>
 
-<section class="food-list">
-        <h2>Food Item List</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Food ID</th>
-                    <th>Food Item</th>
-                    <th>Price (₹)</th>
-                    <th>Source Restaurant</th>
-                    <th>Category</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>101</td>
-                    <td>Margherita Pizza</td>
-                    <td>299</td>
-                    <td>Pizza Hut</td>
-                    <td>Italian</td>
-                </tr>
-                <tr>
-                    <td>102</td>
-                    <td>Chicken Biryani</td>
-                    <td>350</td>
-                    <td>Biryani House</td>
-                    <td>Indian</td>
-                </tr>
-                <tr>
-                    <td>103</td>
-                    <td>Caesar Salad</td>
-                    <td>180</td>
-                    <td>Green Leaf</td>
-                    <td>Salads</td>
-                </tr>
-                <!-- Add more food items as needed -->
-            </tbody>
-        </table>
-    </section>
-
-
+          <!-- Dropdown to show restaurants and prices -->
+          <label for="restaurantSelect">Select Restaurant:</label>
+          <select id="restaurantSelect" class="form-select">
+            {{#each this.restaurants}}
+              <option  value="{{restaurant}}">{{restaurant}} - ₹{{price}}</option>
+            {{/each}}
+          </select>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+</section>
