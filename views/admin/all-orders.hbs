@@ -1,0 +1,96 @@
+<style>
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #ea726b, #e0c76b);
+}
+
+.order-list {
+     background: linear-gradient(135deg, #ea726b, #e0c76b);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    padding: 30px;
+    margin-top: 80px;  /* Adjust this value based on your navbar height */
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #4A4A4A;
+    font-size: 24px;
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: left;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+th {
+    background-color: #4CAF50;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+td {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
+    color: #333;
+}
+
+tbody tr:nth-child(even) td {
+    background-color: #f2f2f2; /* Zebra striping */
+}
+
+tbody tr:nth-child(odd) td {
+    background-color: #ffffff;
+}
+
+
+</style>
+
+
+
+
+    <section class="order-list">
+    <h2>Order List</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer Name</th>
+                <th>Food Items</th>
+                <th>Hostal Name</th>
+                <th>Payment</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>001</td>
+                <td>John Doe</td>
+                <td>Pizza, Burger</td>
+                <td>LH</td>
+                <td>COD</td>
+            </tr>
+            <tr>
+                <td>002</td>
+                <td>Jane Smith</td>
+                <td>Pasta, Salad</td>
+                <td>24</td>
+                <td>UPI</td>
+            </tr>
+            <!-- Add more orders as needed -->
+        </tbody>
+    </table>
+</section>

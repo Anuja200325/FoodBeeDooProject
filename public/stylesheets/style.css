@@ -1,8 +1,8 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+header {
+    width: 100%;
+    position: relative;
 }
 
-a {
-  color: #00B7FF;
+nav {
+    width: 100%;
 }

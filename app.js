@@ -3,6 +3,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var { create } = require('express-handlebars');
+const db = require('./mongodb/connection'); // Import the db connection
+const fileUpload = require('express-fileupload');
+
+
 
 var adminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
@@ -13,23 +18,44 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
+// Create an instance of express-handlebars
+const hbs = create({
+  extname: 'hbs',
+  defaultLayout: 'layout',
+  layoutsDir: __dirname + '/views/layout',
+  partialsDir: __dirname + '/views/partials/'
+});
+
+// Register the handlebars engine
+app.engine('hbs', hbs.engine);
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(fileUpload());
 
 app.use('/', adminRouter);
 app.use('/users', usersRouter);
 
+// Connect to MongoDB when the app starts
+db.connect()
+  .then(() => {
+    console.log('Database connection established.');
+  })
+  .catch((err) => {
+    console.error('Failed to connect to the database:', err);
+  });
+
+
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
+app.use(function (err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
