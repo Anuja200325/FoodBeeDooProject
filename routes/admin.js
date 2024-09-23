@@ -15,6 +15,10 @@ router.get('/orders', function(req,res,next){
 
 })
 
+router.get('/home',function(req,res){
+  res.render('admin/home');
+})
+
 router.get('/all-items',async function(req,res,next){
   console.log('Before function')
 
@@ -62,6 +66,12 @@ router.get('/all-restaurants',(req,res,next)=>{
 
   })
   
+})
+
+
+
+router.get('/reports',function(req,res){
+  res.render('admin/report');
 })
 
 
