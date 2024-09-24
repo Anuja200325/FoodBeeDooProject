@@ -4,6 +4,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var { create } = require('express-handlebars');
+var session=require('express-session');
+const adminHelpers = require('./Helpers/admin-helpers');
+
+
 const db = require('./mongodb/connection'); // Import the db connection
 const fileUpload = require('express-fileupload');
 
@@ -35,6 +39,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
+app.use(session({ secret: "key", resave: false, saveUninitialized: true, cookie: { maxAge: 60000 } }));
+
 
 app.use('/', adminRouter);
 app.use('/users', usersRouter);

@@ -13,11 +13,11 @@
   </head>
   <body>
     
-    
+    {{#if navbarAdmin}}
         {{>admin-header}}
-        
-        {{user-header}}
-    
+    {{else}}
+        {{>user-header}}
+    {{/if}}
     {{{body}}}
     
     
