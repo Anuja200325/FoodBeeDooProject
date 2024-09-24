@@ -12,13 +12,12 @@
     <title>Hello, world!</title>
   </head>
   <body>
-    {{#if showHeader}}
-      {{#if admin}}
+    
+    
         {{>admin-header}}
-          {{else}}
-            {{user-header}}
-      {{/if}}
-    {{/if}}
+        
+        {{user-header}}
+    
     {{{body}}}
     
     
