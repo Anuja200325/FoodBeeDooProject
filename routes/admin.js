@@ -74,6 +74,15 @@ router.get('/reports',function(req,res){
   res.render('admin/report');
 })
 
+router.get('/login', function(req,res){
+  console.log('reach at get.login')
+  res.render('admin/login',{showHeader:true})
+})
+
+router.get("/signup",function(req,res){
+  res.render('admin/sign-up',{showHeader:true})
+})
+
 
 
 module.exports = router;

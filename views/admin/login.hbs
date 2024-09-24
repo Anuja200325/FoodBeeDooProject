@@ -1,0 +1,114 @@
+<style>
+    /* Common styles for both login and signup */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #ff758c, #fef88b);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container, .signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.login-form, .signup-form {
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    width: 350px;
+    text-align: center;
+}
+
+.login-form h2, .signup-form h2 {
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.login-form label, .signup-form label {
+    color: #fff;
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.login-form input, .signup-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+}
+
+.login-form button, .signup-form button {
+    background-color: #28a745;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.login-form button:hover, .signup-form button:hover {
+    background-color: #218838;
+}
+
+.extra {
+    margin-top: 10px;
+}
+
+.extra p {
+    color: #fff;
+}
+
+.extra a {
+    color: #ffd700;
+    text-decoration: none;
+}
+
+.extra a:hover {
+    text-decoration: underline;
+}
+
+</style>
+
+
+
+
+
+
+
+
+
+<section>
+
+    <div class="login-container"></div>
+        <div class="login-form">
+            <h2>Login</h2>
+            <form action="/login" method="post">
+                <label for="email" for="form3Example3">Email</label>
+                <input type="email" id="email" name="email" required>
+                
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                
+                <button type="submit">Login</button>
+            </form>
+            <div class="extra">
+                <p>Don't have an account? <a href="/signup">Sign up</a></p>
+            </div>
+        </div>
+    </div>
+</section>
