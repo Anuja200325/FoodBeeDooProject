@@ -1,0 +1,91 @@
+<style>
+        body {
+            background-color: rgb(201, 46, 46);
+            margin: 0;
+            font-family: Arial, sans-serif;
+            padding-top: 100px; /* Prevent content from overlapping header */
+        }
+
+        .heading-bar {
+            background-image: url('https://img.freepik.com/free-photo/top-view-eid-al-fitr-celebration-with-delicious-food_23-2151205103.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 60px 10px;
+            text-align: center;
+            color: white;
+            font-size: 36px;
+            font-weight: bold;
+            margin-top: 0;
+        }
+
+        section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px;
+        }
+
+        .card {
+            margin: 15px;
+            padding: 10px;
+            border: 1px solid #000000;
+            border-radius: 8px;
+            width: 18rem;
+            background-color: #000000;
+        }
+
+        .card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        .card-price {
+            font-weight: bold;
+            color: #000000;
+        }
+    </style>
+
+<section>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Font Awesome CSS for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    
+    <!-- Heading Bar -->
+    <div class="heading-bar bg-dark text-white text-center py-2">
+        <h2>Food Categories</h2>
+    </div>
+
+    <!-- Content -->
+    <div class="container mt-4">
+    
+            
+                  
+  {{#each items}}
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{this.food_item}}</h5>
+
+        <!-- Dropdown to show restaurants and prices -->
+        <label for="restaurantSelect">Select Restaurant:</label>
+        <select id="restaurantSelect" class="form-select">
+          {{#each this.restaurants}}
+            <option value="{{restaurant}}">{{restaurant}} - ₹{{price}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+  {{/each}}
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>

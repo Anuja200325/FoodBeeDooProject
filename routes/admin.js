@@ -6,7 +6,10 @@ var adminHelpers=require('../Helpers/admin-helpers');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+
   res.render('admin/home', {navbarAdmin: true});
+
+ 
 });
 
 router.use((req, res, next) => {
@@ -35,10 +38,12 @@ router.get('/home',function(req,res){
 })
 
 router.get('/all-items',async function(req,res,next){
+  
   console.log('Before function')
 
   await itemHelpers.availableItems().then((items)=>{
-    //console.log(JSON.stringify(items, null, 2));
+    console.log(JSON.stringify(items, null, 2));
+    
     res.render('admin/all-items',{items})
   })
 
