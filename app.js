@@ -6,7 +6,7 @@ var logger = require('morgan');
 var { create } = require('express-handlebars');
 const db = require('./mongodb/connection'); // Import the db connection
 const fileUpload = require('express-fileupload');
-
+var session=require('express-session')
 
 
 var adminRouter = require('./routes/admin');
@@ -28,16 +28,22 @@ const hbs = create({
 
 // Register the handlebars engine
 app.engine('hbs', hbs.engine);
-
+app.use(express.static('public'));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
+app.use(session({ secret: "key", resave: false, saveUninitialized: true, cookie: { maxAge: 60000 } }));
+
+
+
+
 
 app.use('/', adminRouter);
 app.use('/users', usersRouter);
+
 
 // Connect to MongoDB when the app starts
 db.connect()
