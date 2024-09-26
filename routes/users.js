@@ -20,7 +20,7 @@ const verifyLogin=(req,res,next)=>{
 router.get('/', async function(req, res, next) {
   try {
     const items = await userHelper.getAggregatedProducts(); // Call the new function
-    res.render('user/view_products', { items,showHeader:true }); // Pass items to the view
+    res.render('user/view_products', { items,navbarAdmin:false ,showHeader:true}); // Pass items to the view
   } catch (err) {
     console.error('Error fetching items:', err);
     res.status(500).send('Failed to fetch items');
@@ -28,7 +28,7 @@ router.get('/', async function(req, res, next) {
 });
 
 router.get('/login', function(req, res, next) {
-  res.render('user/login');
+  res.render('user/login',{showHeader:false});
 });
 
 router.get('/sign_up', function(req, res, next) {
@@ -48,7 +48,7 @@ router.post("/sign_up", function(req, res) {
       req.session.loggedIn = true;
       req.session.user = {}; 
       req.session.user._id = id;
-      console.log(req.session.user.id)
+      console.log(req.session.user._id)
       //console.log('Session after signup:', req.session);  // Check if session is working
       res.redirect('/users');
     })

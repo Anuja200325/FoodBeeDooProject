@@ -7,13 +7,15 @@ var adminHelpers=require('../Helpers/admin-helpers');
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
-  res.render('admin/home', {navbarAdmin: true});
+  res.render('admin/home', {navbarAdmin: true,showHeader:true});
 
  
 });
 
 router.use((req, res, next) => {
-  res.locals.navbarAdmin = true;  // Automatically set 'admin: true' for all routes
+  res.locals.navbarAdmin = true; 
+  res.locals.showHeader=true;
+   // Automatically set 'admin: true' for all routes
   next();  // Pass to the next middleware/route handler
 });
 
