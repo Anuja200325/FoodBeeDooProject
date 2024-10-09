@@ -1,3 +1,4 @@
+
 <style>
         body {
             background-color: rgb(201, 46, 46);
@@ -48,44 +49,84 @@
             font-weight: bold;
             color: #000000;
         }
+        .add-to-cart-btn {
+  width: 100%;
+  margin-top: 10px;
+  background-color: #F0C11A; /* Customize the color */
+  color: #fff;
+  border: none;
+  padding: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
     </style>
 
 <section>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Font Awesome CSS for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    
-    <!-- Heading Bar -->
-    <div class="heading-bar bg-dark text-white text-center py-2">
-        <h2>Food Categories</h2>
-    </div>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Font Awesome CSS for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  
+  <!-- Heading Bar -->
+  <div class="heading-bar bg-dark text-white text-center py-2">
+      <h2>Food Categories</h2>
+  </div>
 
-    <!-- Content -->
-    <div class="container mt-4">
-    
-            
-                  
-  {{#each items}}
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">{{this.food_item}}</h5>
+  <!-- Content -->
+  <div class="container mt-4">
+    {{#each items}}
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{this.food_item}}</h5>
 
-        <!-- Dropdown to show restaurants and prices -->
-        <label for="restaurantSelect">Select Restaurant:</label>
-        <select id="restaurantSelect" class="form-select">
-          {{#each this.restaurants}}
-            <option value="{{restaurant}}">{{restaurant}} - ₹{{price}}</option>
-          {{/each}}
-        </select>
-      </div>
-    </div>
-  {{/each}}
+          <!-- Dropdown to show restaurants and prices -->
+          <label for="restaurantSelect">Select Restaurant:</label>
+          <select id="restaurantSelect" class="form-select mb-2">
+            {{#each this.restaurants}}
+              <option value="{{restaurant}}">{{restaurant}} - ₹{{price}}</option>
+            {{/each}}
+          </select>
 
-                </ul>
-            </div>
+          <!-- Add to Cart Button -->
+          <button onclick="addToCart('{{this._id}}', document.getElementById('restaurantSelect').value, '{{userId}}')" class="btn btn-primary">Add to Cart</button>
+
+
         </div>
-    </div>
+      </div>
+    {{/each}}
+  </div>
 </section>
+
+
+<script>
+    // main.js or app.js
+function addToCart(proId, restaurantSelect, userId) {
+    const [restaurant, price] = restaurantSelect.split(' - ₹');
+    fetch('/add-to-cart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ proId, restaurant, price, userId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Error adding item to cart");
+    });
+}
+
+   </script>
+
+   
+
+    
+  

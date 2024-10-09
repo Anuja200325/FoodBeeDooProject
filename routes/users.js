@@ -31,9 +31,30 @@ router.get('/login', function(req, res, next) {
   res.render('user/login',{showHeader:false});
 });
 
+router.post('/login', function(req, res) {
+  userHelper.doLogin(req.body).then((login) => {
+      if (login.status) {
+          req.session.loggedIn = true;
+          req.session.user = { _id: login.userId, name: login.name }; // Assuming login returns userId and name
+          res.redirect("/users");
+      } else {
+          res.render('user/login', { error: 'Invalid email or password' });
+      }
+  }).catch((error) => {
+      console.error('Login error:', error);
+      res.status(500).render('user/login', { error: 'An error occurred. Please try again later.' });
+  });
+});
+
+
+
+
 router.get('/sign_up', function(req, res, next) {
   res.render('user/sign_up');
 });
+
+
+
 
 
 
@@ -44,12 +65,16 @@ router.post("/sign_up", function(req, res) {
   userHelper.doSignup(req.body)
     .then((id) => {
       console.log('doSignup worked');
-      console.log(id)
+      console.log(id);
+      
+      // Set up session with loggedIn and user details
       req.session.loggedIn = true;
-      req.session.user = {}; 
-      req.session.user._id = id;
-      console.log(req.session.user._id)
-      //console.log('Session after signup:', req.session);  // Check if session is working
+      req.session.user = {
+        _id: id,
+        name: req.body.name // Assuming you have a 'name' field in req.body for the user name
+      };
+      
+      console.log('Session after signup:', req.session);  // Check if session is working
       res.redirect('/users');
     })
     .catch((err) => {
@@ -58,6 +83,31 @@ router.post("/sign_up", function(req, res) {
     });
 });
 
+router.get("/cartproducts", verifyLogin, async (req, res) => {
+  try {
+    console.log("inside the cartproduct")
+    let products = await userHelper.getCartProducts(req.session.user._id);
+    console.log("total")
+    let total = await userHelper.getTotalAmount(req.session.user._id);
+    res.render("user/cart", { products, user: req.session.user, total });
+  } catch (error) {
+    console.error('Error fetching cart products:', error);
+    res.status(500).send('Failed to fetch cart products');
+  }
+});
+
+
+router.post('/add-to-cart', async (req, res) => {
+  console.log('hi')
+  const { proId, restaurant, price, userId } = req.body;
+  try {
+    await userHelper.addToCart(proId, restaurant, price, userId);
+    res.json({ message: 'Item added to cart successfully' });
+  } catch (error) {
+    console.error('Error adding item to cart:', error);
+    res.status(500).json({ message: 'Failed to add item to cart' });
+  }
+});
 
 
 module.exports = router;

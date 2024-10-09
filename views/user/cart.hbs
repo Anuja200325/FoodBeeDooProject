@@ -1,0 +1,40 @@
+<section>
+    <div class="container">
+        <table class="table mt-5">
+            <thead>
+                <tr>
+                    <th scope="col">Item</th>
+                    <th scope="col">Restaurant</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each products}}
+                <tr>
+                    <td>
+                        <img style="width: 100px; height: 50px;" src="/product-images/{{this.product._id}}.jpg" alt="">
+                        <span>{{this.product.name}}</span>
+                    </td>
+                    <td>{{this.restaurant}}</td>
+                    <td>
+                        <button class="cart-item-count mr-3" onclick="changeQuantity('{{this._id}}', '{{this.product._id}}','{{../user}}', -1)">-</button>
+                        <span id="{{this.product._id}}">{{this.quantity}}</span>
+                        <button class="cart-item-count ml-3" onclick="changeQuantity('{{this._id}}', '{{this.product._id}}','{{../user}}', 1)">+</button>
+                    </td>
+                    <td>₹{{this.product.price}}</td>
+                    <td>
+                        <a href="#" class="btn btn-danger">Remove</a>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <hr>
+        <div class="d-flex flex-column align-items-end mt-3 mr-3">
+            <h3 class="mb-2">Total: Rs.<span id="total">{{total}}</span></h3>
+            <a href="/place-order" class="btn btn-success">Place Order</a>
+        </div>
+    </div>
+</section>
