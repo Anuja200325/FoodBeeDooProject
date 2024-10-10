@@ -83,31 +83,33 @@ router.post("/sign_up", function(req, res) {
     });
 });
 
-router.get("/cartproducts", verifyLogin, async (req, res) => {
-  try {
+router.get("/cart", async (req, res) => {
+  /*try {
     console.log("inside the cartproduct")
     let products = await userHelper.getCartProducts(req.session.user._id);
     console.log("total")
     let total = await userHelper.getTotalAmount(req.session.user._id);
-    res.render("user/cart", { products, user: req.session.user, total });
+    res.render("user/cart", { products, user: req.session.user, total,showHeader:true,navbarAdmin:false });
   } catch (error) {
     console.error('Error fetching cart products:', error);
     res.status(500).send('Failed to fetch cart products');
   }
+});*/
+res.render("user/cart",{showHeader:true,navbarAdmin:false})})
+
+
+router.post('/cart', (req, res) => {
+  console.log('Received a POST request to cart', req.body);
+  
+  const { food_item, restaurant, price } = req.body;
+  userHelper.addToCart(food_item,restaurant,price).then(()=>{
+    res.json({ success: true });
+  })
+  
+  
 });
 
 
-router.post('/add-to-cart', async (req, res) => {
-  console.log('hi')
-  const { proId, restaurant, price, userId } = req.body;
-  try {
-    await userHelper.addToCart(proId, restaurant, price, userId);
-    res.json({ message: 'Item added to cart successfully' });
-  } catch (error) {
-    console.error('Error adding item to cart:', error);
-    res.status(500).json({ message: 'Failed to add item to cart' });
-  }
-});
 
 
 module.exports = router;

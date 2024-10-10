@@ -103,22 +103,30 @@ const getCartProducts = (userId) => {
 };
 
 // In user-helper.js or wherever the addToCart function is defined
-async function addToCart(proId, restaurantName, price, userId) {
-    try {
-      const cartItem = {
-        productId: proId,
-        restaurant: restaurant,
-        price: parseInt(price),
-        user: new ObjectId(userId),
-        quantity: 1
-      };
-      return await db.get().collection(collection.CART_COLLECTION).insertOne(cartItem);
-    } catch (error) {
-      console.error('Error in addToCart:', error);
-      throw error;
-    }
-  }
-
+const addToCart = (item, resto, price) => {
+    console.log('@userHelpers');
+  
+    const cart = {
+      food_item: item,
+      restaurant: resto,
+      price: price
+    };
+  
+    return new Promise(async (resolve, reject) => {
+      if (item) {
+        try {
+          const result = await db.get().collection(collection.CART_COLLECTION).insertOne(cart);
+          console.log('Added:', result.insertedId); // Log the inserted document ID
+          resolve();
+        } catch (error) {
+          console.error('Error adding to cart:', error);
+          reject(error); // Reject the promise with the error
+        }
+      } else {
+        reject(new Error('Item is required')); // Reject if item is not provided
+      }
+    });
+  };
 
 
 function changeQuantity(cartId, proId, userId, count) {

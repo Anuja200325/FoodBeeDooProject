@@ -91,7 +91,8 @@
           </select>
 
           <!-- Add to Cart Button -->
-          <button onclick="addToCart('{{this._id}}', document.getElementById('restaurantSelect').value, '{{userId}}')" class="btn btn-primary">Add to Cart</button>
+          <button type="button" class="btn btn-primary" onclick="addToCart('{{this.food_item}}', '{{@index}}')">Add to Cart</button>
+
 
 
         </div>
@@ -102,29 +103,32 @@
 
 
 <script>
-    // main.js or app.js
-function addToCart(proId, restaurantSelect, userId) {
-    const [restaurant, price] = restaurantSelect.split(' - ₹');
+    function addToCart(foodItem, index) {
+    const selectElement = document.getElementById(`restaurantSelect-${index}`);
+    const selectedOption = selectElement.options[selectElement.selectedIndex];
+    const restaurant = selectedOption.value;
+    const price = selectedOption.getAttribute('data-price');
+
     fetch('/add-to-cart', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ proId, restaurant, price, userId })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message) {
-            alert(data.message);
+        body: JSON.stringify({ food_item: foodItem, restaurant, price, userId: 'YOUR_USER_ID_HERE' }), // Include userId if necessary
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        alert("Error adding item to cart");
+        return response.json();
+    }).then(data => {
+        console.log('Success:', data);
+        // Update the UI as needed
+    }).catch(error => {
+        console.error('Error:', error);
     });
 }
 
-   </script>
+</script>
 
    
 
