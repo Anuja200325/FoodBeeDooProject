@@ -82,16 +82,17 @@
         <div class="card-body">
           <h5 class="card-title">{{this.food_item}}</h5>
 
-          <!-- Dropdown to show restaurants and prices -->
-          <label for="restaurantSelect">Select Restaurant:</label>
-          <select id="restaurantSelect" class="form-select mb-2">
-            {{#each this.restaurants}}
-              <option value="{{restaurant}}">{{restaurant}} - ₹{{price}}</option>
-            {{/each}}
-          </select>
+                        <!-- Dropdown to show restaurants and prices -->
+            <label for="restaurantSelect">Select Restaurant:</label>
+                <select id="restaurantSelect-{{@index}}" class="form-select mb-2">
+                {{#each this.restaurants}}
+                    <option value="{{restaurant}}" data-price="{{price}}">{{restaurant}} - ₹{{price}}</option>
+                {{/each}}
+                </select>
 
-          <!-- Add to Cart Button -->
-          <button type="button" class="btn btn-primary" onclick="addToCart('{{this.food_item}}', '{{@index}}')">Add to Cart</button>
+                <button type="button" class="btn btn-primary" onclick="addToCart('{{this.food_item}}', '{{@index}}')">Add to Cart</button>
+
+
 
 
 
@@ -103,18 +104,18 @@
 
 
 <script>
-    function addToCart(foodItem, index) {
+   function addToCart(foodItem, index) {
     const selectElement = document.getElementById(`restaurantSelect-${index}`);
     const selectedOption = selectElement.options[selectElement.selectedIndex];
     const restaurant = selectedOption.value;
     const price = selectedOption.getAttribute('data-price');
-
-    fetch('/add-to-cart', {
+  
+    fetch('/users/cart', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ food_item: foodItem, restaurant, price, userId: 'YOUR_USER_ID_HERE' }), // Include userId if necessary
+        body: JSON.stringify({ food_item: foodItem, restaurant, price }), // Include userId if necessary
     }).then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -127,6 +128,7 @@
         console.error('Error:', error);
     });
 }
+
 
 </script>
 

@@ -1,40 +1,87 @@
-<section>
-    <div class="container">
-        <table class="table mt-5">
-            <thead>
-                <tr>
-                    <th scope="col">Item</th>
-                    <th scope="col">Restaurant</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each products}}
-                <tr>
-                    <td>
-                        <img style="width: 100px; height: 50px;" src="/product-images/{{this.product._id}}.jpg" alt="">
-                        <span>{{this.product.name}}</span>
-                    </td>
-                    <td>{{this.restaurant}}</td>
-                    <td>
-                        <button class="cart-item-count mr-3" onclick="changeQuantity('{{this._id}}', '{{this.product._id}}','{{../user}}', -1)">-</button>
-                        <span id="{{this.product._id}}">{{this.quantity}}</span>
-                        <button class="cart-item-count ml-3" onclick="changeQuantity('{{this._id}}', '{{this.product._id}}','{{../user}}', 1)">+</button>
-                    </td>
-                    <td>₹{{this.product.price}}</td>
-                    <td>
-                        <a href="#" class="btn btn-danger">Remove</a>
-                    </td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
-        <hr>
-        <div class="d-flex flex-column align-items-end mt-3 mr-3">
-            <h3 class="mb-2">Total: Rs.<span id="total">{{total}}</span></h3>
-            <a href="/place-order" class="btn btn-success">Place Order</a>
+<body>
+    <section>
+        <div class="container" style="margin-top: 100px;">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">item</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Restaurant</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+    {{#each products}}
+    <tr>
+        <td class="align-middle">
+            <img src="/product-images/{{this._id}}.jpg" alt="" style="width: 100px; height: 50px;">
+        </td>
+        <td class="align-middle">{{this.food_item}}</td>
+        <td class="align-middle">{{this.restaurant}}</td>
+        <td class="align-middle">
+            <button class="cart-item-count btn btn-sm btn-outline-secondary mr-2" onclick="changeQuantity('{{this._id}}','{{this.quantity}}', '{{../user}}', -1)">-</button>
+            <span id="{{this._id}}">{{this.quantity}}</span>
+            <button class="cart-item-count btn btn-sm btn-outline-secondary ml-2" onclick="changeQuantity('{{this._id}}','{{this.quantity}}','{{../user}}', 1)">+</button>
+        </td>
+        <td class="align-middle">Rs.{{this.price}}</td>
+        <td class="align-middle">
+            <a href="#" class="btn btn-danger btn-sm">Remove</a>
+        </td>
+    </tr>
+    {{/each}}
+</tbody>
+
+            </table>
+            <hr>
+            <div class="d-flex flex-column align-items-end mt-3">
+                <h3 class="mb-2">Total: Rs.<span id="total">{{total}}</span></h3>
+                <a href="/place-order" class="btn btn-success">Place Order</a>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+
+    <script>
+    function changeQuantity(cartId,quantity, userId, count) {
+    
+    count = parseInt(count);
+    console.log("@changeQuantity")
+    // Check that quantity won't go below 1
+    if (quantity + count < 1) {
+        alert("Quantity can't be less than 1");
+        return;
+    }
+
+    $.ajax({
+        url: '/users/change-product-quantity',
+        data: {
+            cart: cartId,
+            quantity:quantity,
+            user: userId,
+            count: count,
+           
+        },
+        method: 'POST',
+        success: (response) => {
+            if (response.removeProduct) {
+                alert("Product removed from cart");
+                document.getElementById(cartId).closest('tr').remove();
+                document.getElementById('total').innerHTML = `Total: Rs. ${response.total}`;
+            } else if (response.status) {
+                // Update quantity and total price
+                quantityElem.innerHTML = quantity + count;
+                document.getElementById('total').innerHTML = `Total: Rs. ${response.total}`;
+            } else {
+                alert("Failed to update the cart");
+            }
+        },
+        error: (err) => {
+            console.error("AJAX error:", err);
+            alert("Error communicating with the server.");
+        }
+    });
+}
+
+    </script>
+</body>

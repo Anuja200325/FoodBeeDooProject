@@ -43,6 +43,10 @@ app.use(session({ secret: "key", resave: false, saveUninitialized: true, cookie:
 
 
 
+app.use((req, res, next) => {
+  res.locals.user = req.session.user; // Store user data for access in templates
+  next();
+});
 
 
 app.use('/', adminRouter);
