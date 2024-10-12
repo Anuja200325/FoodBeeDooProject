@@ -1,4 +1,4 @@
-<body>
+
     <section>
         <div class="container" style="margin-top: 100px;">
             <table class="table table-bordered table-hover">
@@ -42,46 +42,31 @@
         </div>
     </section>
 
-    <script>
-    function changeQuantity(cartId,quantity, userId, count) {
-    
-    count = parseInt(count);
-    console.log("@changeQuantity")
-    // Check that quantity won't go below 1
-    if (quantity + count < 1) {
-        alert("Quantity can't be less than 1");
-        return;
-    }
+<script>
+    function changeQuantity(cartId, quantity, userId, count) {
+    count = parseInt(count); // Ensure count is parsed as an integer
+    quantity = parseInt(document.getElementById(cartId).innerText); // Get the latest quantity from the DOM
+    console.log('@changeQuantity hbs before ajax');
 
     $.ajax({
-        url: '/users/change-product-quantity',
+        url: '/users/change-quantity/',
         data: {
-            cart: cartId,
-            quantity:quantity,
-            user: userId,
-            count: count,
-           
+            cartId: cartId,
+            count: count
         },
-        method: 'POST',
+        method: 'post',
         success: (response) => {
-            if (response.removeProduct) {
-                alert("Product removed from cart");
-                document.getElementById(cartId).closest('tr').remove();
-                document.getElementById('total').innerHTML = `Total: Rs. ${response.total}`;
-            } else if (response.status) {
-                // Update quantity and total price
-                quantityElem.innerHTML = quantity + count;
-                document.getElementById('total').innerHTML = `Total: Rs. ${response.total}`;
-            } else {
-                alert("Failed to update the cart");
+            console.log('@Success', response);
+            if (response.success) {
+                // Update the quantity with the new value
+                let newQuantity = quantity + count;
+                document.getElementById(cartId).innerHTML = newQuantity;
             }
         },
         error: (err) => {
-            console.error("AJAX error:", err);
-            alert("Error communicating with the server.");
+            console.log('Error:', err);
         }
     });
 }
 
-    </script>
-</body>
+</script>
