@@ -209,14 +209,14 @@ const removeFromCart= async (userId, cartId) => {
   }
 }
 
-const updateCartQuantity= async (userId, cartId, newQuantity) => {
+const updateCartQuantity = async (userId, cartId, newQuantity) => {
     try {
         const result = await db.get().collection(collection.CART_COLLECTION).updateOne(
-            { user: new ObjectId(userId), 'items._id': new ObjectId(cartId) },
-
-            { $set: { 'items.$.quantity': newQuantity } }
+            { user: new ObjectId(userId), _id: new ObjectId(cartId) },  // Match by user and cart item ID
+            { $set: { quantity: newQuantity } }  // Update the quantity directly
         );
-        console.log("Updated Result",result)
+        
+        console.log("Updated Result", result);
 
         if (result.modifiedCount === 0) {
             throw new Error("Failed to update cart quantity");
@@ -228,7 +228,35 @@ const updateCartQuantity= async (userId, cartId, newQuantity) => {
         console.error('Error updating cart quantity:', error);
         return { success: false, error: 'Could not update cart quantity' };
     }
-}
+};
+
+const changeQuantity = (body) => {
+    console.log('@changeQuantity of UserHelpers');
+    console.log('check oncemore req.body', body);
+
+    return new Promise((resolve, reject) => {
+        // Convert count to integer
+        const count = parseInt(body.count);
+
+        // Update the cart item quantity
+        db.get().collection(collection.CART_COLLECTION).updateOne(
+            { _id: new ObjectId(body.cartId) }, // Ensure cartId is ObjectId
+            { $inc: { quantity: count } } // Increment quantity by the count
+        ).then((response) => {
+            if (response.modifiedCount > 0) {
+                resolve({ status: true });
+            } else {
+                reject('Quantity update failed');
+            }            
+        }).catch((err) => {
+            reject('Error updating quantity: ' + err);
+        });
+    });
+};
+
+
+
+
   
 
 // Export both functions
@@ -240,5 +268,6 @@ module.exports = {
     addToCart,
     removeFromCart,
     getTotalAmount,
-    updateCartQuantity
+    updateCartQuantity,
+    changeQuantity
 };

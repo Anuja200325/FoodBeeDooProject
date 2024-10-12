@@ -147,6 +147,25 @@ router.post('/change-product-quantity', async (req, res) => {
 
 
 
+router.post('/change-quantity', (req, res) => {
+  console.log('@post function of change quantity');
+  console.log('req.body:', req.body);
+
+  // Ensure count is a number before passing to changeQuantity
+  req.body.count = parseInt(req.body.count);
+
+  userHelper.changeQuantity(req.body).then((newTotal) => {
+    console.log('@post function after changeQuantity successful');
+    res.json({ success: true, newTotal: newTotal });
+  }).catch((err) => {
+    console.error('Error updating quantity:', err);
+    res.status(500).json({ error: 'Failed to change quantity' });
+  });
+});
+
+
+
+
 
 
 
