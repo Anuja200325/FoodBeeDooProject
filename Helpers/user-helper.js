@@ -238,16 +238,34 @@ const changeQuantity = (body) => {
         // Convert count to integer
         const count = parseInt(body.count);
 
-        // Update the cart item quantity
+        // First, increment or decrement the quantity
         db.get().collection(collection.CART_COLLECTION).updateOne(
             { _id: new ObjectId(body.cartId) }, // Ensure cartId is ObjectId
             { $inc: { quantity: count } } // Increment quantity by the count
         ).then((response) => {
             if (response.modifiedCount > 0) {
-                resolve({ status: true });
+                // Fetch the updated cart item to check its quantity
+                db.get().collection(collection.CART_COLLECTION).findOne(
+                    { _id: new ObjectId(body.cartId) }
+                ).then((cartItem) => {
+                    if (cartItem && cartItem.quantity <= 0) {
+                        // If quantity is zero, remove the product
+                        db.get().collection(collection.CART_COLLECTION).deleteOne(
+                            { _id: new ObjectId(body.cartId) }
+                        ).then(() => {
+                            resolve({ removeProduct: true });
+                        }).catch((err) => {
+                            reject('Error removing product: ' + err);
+                        });
+                    } else {
+                        resolve({ removeProduct: false });
+                    }
+                }).catch((err) => {
+                    reject('Error fetching cart item: ' + err);
+                });
             } else {
                 reject('Quantity update failed');
-            }            
+            }
         }).catch((err) => {
             reject('Error updating quantity: ' + err);
         });
