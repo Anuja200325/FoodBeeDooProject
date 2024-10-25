@@ -174,6 +174,12 @@ router.post('/remove-item', async (req, res) => {
   }
 });
 
+router.get('/place-order',verifyLogin,async (req,res)=>{
+  console.log("@place order")
+  let total=await userHelper.getTotalAmount(req.session.user._id)
+  console.log()
+  res.render('user/place-order',{total,showHeader:false})
+})
 
 
 
