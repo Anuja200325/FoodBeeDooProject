@@ -153,39 +153,6 @@ const addToCart = (userId, item, resto, price) => {
 
 
 
-const getTotalAmount = async (userId) => {
-  try {
-      const total = await db.get().collection(collection.CART_COLLECTION).aggregate([
-          { $match: { user: new ObjectId(userId) } },
-          { $unwind: '$items' }, // Assuming items is the array in your cart collection
-          {
-              $lookup: {
-                  from: collection.ITEMS_COLLECTION,
-                  localField: 'items.food_item',
-                  foreignField: '_id',
-                  as: 'productDetails'
-              }
-          },
-          {
-              $project: {
-                  quantity: '$items.quantity',
-                  price: { $arrayElemAt: ['$productDetails.price', 0] }
-              }
-          },
-          {
-              $group: {
-                  _id: null,
-                  totalAmount: { $sum: { $multiply: ['$quantity', '$price'] } }
-              }
-          }
-      ]).toArray();
-
-      return total.length > 0 ? total[0].totalAmount : 0;
-  } catch (error) {
-      console.error('Error calculating total amount:', error);
-      throw error;
-  }
-};
 
   
 
@@ -282,6 +249,38 @@ const removeItem=async (cartId) => {
     });
 }
 
+const getTotalAmount = async (userId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let total = await db.get().collection(collection.CART_COLLECTION).aggregate([
+                {
+                    $match: { user: new ObjectId(userId) }
+                },
+                {
+                    $project: {
+                        food_item: 1,
+                        restaurant: 1,
+                        price: { $toDouble: "$price" }, // Convert the price to a number
+                        quantity: 1
+                    }
+                },
+                {
+                    $group: {
+                        _id: null,
+                        total: { $sum: { $multiply: ["$quantity", "$price"] } }
+                    }
+                }
+            ]).toArray();
+
+            resolve(total[0]?.total || 0);
+        } catch (error) {
+            console.error('Error calculating total:', error);
+            reject(error);
+        }
+    });
+};
+
+
 
   
 
@@ -297,4 +296,5 @@ module.exports = {
     updateCartQuantity,
     changeQuantity,
     removeItem
+    
 };
