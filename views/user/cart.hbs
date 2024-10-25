@@ -57,9 +57,16 @@
         method: 'post',
         success: (response) => {
             console.log('@Success', response);
-            if (response.success) {
+            let newQuantity=quantity + count
+            if (newQuantity<=0) {
                 // Update the quantity with the new value
-                let newQuantity = quantity + count;
+                //let newQuantity = quantity + count;
+                //document.getElementById(cartId).innerHTML = newQuantity;
+                alert("Product removed from cart")
+                location.reload()
+            }
+            else{
+                
                 document.getElementById(cartId).innerHTML = newQuantity;
             }
         },
