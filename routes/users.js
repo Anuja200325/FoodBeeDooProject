@@ -163,6 +163,17 @@ router.post('/change-quantity', (req, res) => {
   });
 });
 
+router.post('/remove-item', async (req, res) => {
+  const cartId = req.body.cartId;
+  try {
+      await userHelper.removeItem(cartId);
+      res.json({ success: true });
+  } catch (err) {
+      console.error('Error in remove-item route:', err);
+      res.status(500).json({ error: 'Failed to remove item' });
+  }
+});
+
 
 
 

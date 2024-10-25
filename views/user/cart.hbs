@@ -27,7 +27,7 @@
         </td>
         <td class="align-middle">Rs.{{this.price}}</td>
         <td class="align-middle">
-            <a href="#" class="btn btn-danger btn-sm">Remove</a>
+            <button class="btn btn-danger btn-sm" onclick="removeItem('{{this._id}}', '{{../user}}')">Remove</button>
         </td>
     </tr>
     {{/each}}
@@ -75,5 +75,27 @@
         }
     });
 }
+
+//To remove the product
+    function removeItem(cartId, userId) {
+        console.log('@removeItem hbs triggered with cartID',cartId);
+
+        $.ajax({
+            url: '/users/remove-item/',
+            data: {
+                cartId: cartId
+            },
+            method: 'post',
+            success: (response) => {
+                console.log('@Remove Success', response);
+                // Optionally reload the page to reflect changes
+                location.reload();
+            },
+            error: (err) => {
+                console.log('Error:', err);
+            }
+        });
+    }
+
 
 </script>
