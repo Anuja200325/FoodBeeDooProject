@@ -272,7 +272,15 @@ const changeQuantity = (body) => {
     });
 };
 
-
+const removeItem=async (cartId) => {
+    return new Promise((resolve, reject) => {
+        db.get().collection(collection.CART_COLLECTION).deleteOne({ _id:new ObjectId(cartId) }).then((response) => {
+            resolve(response);
+        }).catch((err) => {
+            reject(err);
+        });
+    });
+}
 
 
   
@@ -287,5 +295,6 @@ module.exports = {
     removeFromCart,
     getTotalAmount,
     updateCartQuantity,
-    changeQuantity
+    changeQuantity,
+    removeItem
 };
