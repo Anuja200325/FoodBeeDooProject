@@ -89,7 +89,7 @@ router.post("/sign_up", function(req, res) {
     });
 });
 
-router.get("/cartPage",async (req, res) => {
+router.get("/cartPage",verifyLogin,async (req, res) => {
   console.log("userID");
   console.log(req.session.user._id)
   let products=await userHelper.getCartProducts(req.session.user._id)
@@ -112,38 +112,7 @@ router.post('/cart',verifyLogin, async (req, res) => {
 });
 
 
-router.post('/change-product-quantity', async (req, res) => {
-  console.log(req.body)
-  
-  try {
-    const { cart, quantity, user, count } = req.body;
-    const userId = new ObjectId(user._id || user)
-    console.log(userId)
-    // Parse values to ensure they are numbers
-    const cartId = cart;
-    const change = parseInt(count,10);
-    const currentQuantity = parseInt(quantity,10);
 
-    // Calculate the new quantity
-    const newQuantity = currentQuantity + change;
-
-    if (newQuantity < 1) {
-      // Remove item if quantity is less than 1
-      await userHelper.removeFromCart(userId, cartId);
-      
-      return res.json({ removeProduct: true});
-    } else {
-      // Update the quantity in the cart
-      await userHelper.updateCartQuantity(new ObjectId(user), cartId, newQuantity);
-
-     
-      return res.json({ status: true });
-    }
-  } catch (error) {
-    console.error('Error changing product quantity:', error);
-    res.status(500).json({ success: false, message: 'Failed to change quantity' });
-  }
-});
 
 
 
@@ -181,6 +150,16 @@ router.get('/place-order',verifyLogin,async (req,res)=>{
   res.render('user/place-order',{total,showHeader:false})
 })
 
+router.post('/place-order', verifyLogin, async (req, res) => {
+  console.log("@place-order Post Router");
+  try {
+    const orderId = await userHelper.placeorder(req.body);
+    res.json({ success: true, orderId }); // Respond with success or redirect to confirmation page
+  } catch (error) {
+    console.error('Order placement error:', error);
+    res.status(500).json({ success: false, message: 'Failed to place order' });
+  }
+});
 
 
 
