@@ -27,7 +27,11 @@ const hbs = create({
   extname: 'hbs',
   defaultLayout: 'layout',
   layoutsDir: __dirname + '/views/layout',
-  partialsDir: __dirname + '/views/partials/'
+  partialsDir: __dirname + '/views/partials/',
+  helpers: {
+    multiply: (price, quantity) => price * quantity
+}
+
 });
 
 // Register the handlebars engine
@@ -77,6 +81,11 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+ 
+
+
+
+
 
 
 

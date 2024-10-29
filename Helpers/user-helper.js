@@ -281,6 +281,30 @@ const getTotalAmount = async (userId) => {
 };
 
 
+const placeorder= async (orderData) => {
+    try {
+      // Create order object with data from the form
+      const order = {
+        firstName: orderData.firstName,
+        lastName: orderData.lastName,
+        address: orderData.address,
+        email: orderData.email,
+        phone: orderData.phone,
+        additionalInfo: orderData.additionalInfo,
+        totalAmount: orderData.totalAmount, // Assuming total is calculated on the server-side
+        createdAt: new Date(),
+      };
+
+      // Insert order into 'orders' collection
+      const response = await db.get().collection(collection.ORDER_COLLECTION).insertOne(order);
+      console.log('Order placed successfully:', response.insertedId);
+      return response.insertedId;
+    } catch (error) {
+      console.error('Error placing order:', error);
+      throw new Error('Failed to place order');
+    }
+  }
+
 
   
 
@@ -295,6 +319,7 @@ module.exports = {
     getTotalAmount,
     updateCartQuantity,
     changeQuantity,
-    removeItem
+    removeItem,
+    placeorder
     
 };
