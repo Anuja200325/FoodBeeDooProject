@@ -1,138 +1,115 @@
-
-<style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodBeeDoo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+    <style>
         body {
-            background-color: rgb(201, 46, 46);
-            margin: 0;
-            font-family: Arial, sans-serif;
-            padding-top: 100px; /* Prevent content from overlapping header */
+            background: linear-gradient(to bottom, #f8e1a1, #e3c27e, #d2a968);
+            font-family: 'Poppins', sans-serif;
         }
-
+        .navbar {
+            background-color: #8B5A2B;
+            padding: 15px;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .navbar a {
+            color: #fff !important;
+        }
         .heading-bar {
-            background-image: url('https://img.freepik.com/free-photo/top-view-eid-al-fitr-celebration-with-delicious-food_23-2151205103.jpg');
+            background: url('https://img.freepik.com/free-photo/top-view-food-background-with-copy-space_23-2148818373.jpg') no-repeat center;
             background-size: cover;
-            background-position: center;
-            padding: 60px 10px;
+            padding: 80px 10px;
             text-align: center;
             color: white;
-            font-size: 36px;
+            font-size: 40px;
             font-weight: bold;
-            margin-top: 0;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
         }
-
-        section {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            padding: 20px;
-        }
-
         .card {
-            margin: 15px;
-            padding: 10px;
-            border: 1px solid #000000;
-            border-radius: 8px;
-            width: 18rem;
-            background-color: #000000;
+            background: #fff3e6;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease-in-out;
         }
-
-        .card img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-        }
-
-        .card-body {
-            padding: 15px;
-        }
-
-        .card-price {
-            font-weight: bold;
-            color: #000000;
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
         .add-to-cart-btn {
-  width: 100%;
-  margin-top: 10px;
-  background-color: #F0C11A; /* Customize the color */
-  color: #fff;
-  border: none;
-  padding: 10px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-    </style>
-
-<section>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- Font Awesome CSS for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  
-  <!-- Heading Bar -->
-  <div class="heading-bar bg-dark text-white text-center py-2">
-      <h2>Food Categories</h2>
-  </div>
-
-  <!-- Content -->
-  <div class="container mt-4">
-    {{#each items}}
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">{{this.food_item}}</h5>
-
-                        <!-- Dropdown to show restaurants and prices -->
-            <label for="restaurantSelect">Select Restaurant:</label>
-                <select id="restaurantSelect-{{@index}}" class="form-select mb-2">
-                {{#each this.restaurants}}
-                    <option value="{{restaurant}}" data-price="{{price}}">{{restaurant}} - ₹{{price}}</option>
-                {{/each}}
-                </select>
-
-                <button type="button" class="btn btn-primary" onclick="addToCart('{{this.food_item}}', '{{@index}}')">Add to Cart</button>
-
-
-
-
-
-        </div>
-      </div>
-    {{/each}}
-  </div>
-</section>
-
-
-<script>
-   function addToCart(foodItem, index) {
-    const selectElement = document.getElementById(`restaurantSelect-${index}`);
-    const selectedOption = selectElement.options[selectElement.selectedIndex];
-    const restaurant = selectedOption.value;
-    const price = selectedOption.getAttribute('data-price');
-  
-    fetch('/users/cart', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ food_item: foodItem, restaurant, price }), // Include userId if necessary
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+            background: linear-gradient(90deg, #D2691E, #A0522D);
+            color: #fff;
+            border: none;
+            padding: 12px;
+            font-weight: bold;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease-in-out;
         }
-        return response.json();
-    }).then(data => {
-        console.log('Success:', data);
-        // Update the UI as needed
-    }).catch(error => {
-        console.error('Error:', error);
-    });
-}
-
-
-</script>
-
-   
-
-    
-  
+        .add-to-cart-btn:hover {
+            background: linear-gradient(90deg, #A0522D, #8B4513);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#">FoodBeeDoo</a>
+    </nav>
+    <div class="heading-bar">
+        <h2>Food Categories</h2>
+    </div>
+    <div class="container mt-5">
+        <div class="row">
+            {{#each items}}
+            <div class="col-md-4 mb-4">
+                <div class="card p-4">
+                    <div class="card-body text-center">
+                        <h5 class="card-title font-weight-bold">{{this.food_item}}</h5>
+                        <label for="restaurantSelect" class="font-weight-bold mt-2">Select Restaurant:</label>
+                        <select id="restaurantSelect-{{@index}}" class="form-control mb-3">
+                            {{#each this.restaurants}}
+                            <option value="{{restaurant}}" data-price="{{price}}">{{restaurant}} - ₹{{price}}</option>
+                            {{/each}}
+                        </select>
+                        <button type="button" class="add-to-cart-btn" onclick="addToCart('{{this.food_item}}', '{{@index}}')">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    <script>
+        function addToCart(foodItem, index) {
+            const selectElement = document.getElementById(`restaurantSelect-${index}`);
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            const restaurant = selectedOption.value;
+            const price = selectedOption.getAttribute('data-price');
+            
+            fetch('/users/cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ food_item: foodItem, restaurant, price }),
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            }).then(data => {
+                console.log('Success:', data);
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
